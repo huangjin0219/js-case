@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键导航-未完成</title>
+    <style>
+        body{
+            margin: 0;
+            background-image: url("images/bg.gif");
+        }
+        h1{
+            margin: 100px 0;
+            text-align: center;
+        }
+        .keybord{
+            width: 800px;
+            height: 700px;
+            margin: 50px auto;
+        }
+        button{
+            width: 60px;
+            height: 60px;
+        }
+        .keybord>div{
+            margin: 10px 0;
+            text-align: center;
+        }
+        .keybord>div>button+button{
+            margin-left: 7px;
+        }
+    </style>
+</head>
+<body>
+    <h1>键盘导航 一键直达</h1>
+    <div class="keybord">
+        <div class="d">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button>0</button>
+        </div>
+        <div class="f">
+            <button>q</button>
+            <button>w</button>
+            <button>e</button>
+            <button>r</button>
+            <button>t</button>
+            <button>y</button>
+            <button>u</button>
+            <button>i</button>
+            <button>o</button>
+            <button>p</button>
+        </div>
+        <div class="s">
+            <button>a</button>
+            <button>s</button>
+            <button>d</button>
+            <button>f</button>
+            <button>g</button>
+            <button>h</button>
+            <button>j</button>
+            <button>k</button>
+            <button>l</button>
+        </div>
+        <div class="t">
+            <button>z</button>
+            <button>x</button>
+            <button>c</button>
+            <button>v</button>
+            <button>b</button>
+            <button>n</button>
+            <button>m</button>
+        </div>
+    </div>
+    <script>
+        let aBtn = document.querySelectorAll("button");
+        let body = document.querySelector("body");
+        body.addEventListener("contextmenu",function(ev){
+            if(ev.target.tagName==="BUTTON"){
+                ev.preventDefault();//阻止默认事件
+                console.log(ev.target);
+                let src = window.prompt("请输入一个网址：");
+                let name = window.prompt("请输入网址名称：");
+                ev.target.dataset.name = name;//设置自定义属性dataset
+                ev.target.dataset.src = src;//设置自定义属性dataset
+                ev.target.appendChild("span");
+                ev.target.lastElementChild.innerText = name;
+            }
+        })
+        //按下任意一个字符 绑定一个事件
+        body.addEventListener("keypress",function(ev){
+            ev.preventDefault();//阻止默认事件
+            console.log(ev.key);
+            if(ev.key==1){
+                console.log(ev);
+                // window.open(ev.target.dataset.src);           
+            }
+        })
+        aBtn[0].addEventListener("click",function(ev){
+            console.log(ev.target.dataset.src);
+            if(ev.target.innerText==1){
+                window.open(ev.target.dataset.src);           
+            }
+        })
+    </script>
+</body>
+</html>
