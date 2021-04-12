@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图-js</title>
+    <style>
+        body,ul,p {
+            margin: 0;
+        }
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        .banner {
+            width: 700px;
+            height: 750px;
+            margin: 50px auto 0;
+        }
+        .con {
+            position: relative;
+            width: 700px;
+            height: 700px;
+        }
+        .con>button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);    
+        }
+        .con>button.leftBtn {
+            left: 0;
+        }
+        .con>button.rightBtn {
+            right: 0;
+        }
+        .con>ul {
+            width: 100%;
+            height: 100%;
+        }
+        .con>ul>li {
+            display: none;
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        .con>ul>li>p {
+            position: absolute;
+            width: 100%;
+            background-color: rgba(0,0,0,0.5);
+            text-align: center;
+            color: aliceblue;
+        }
+        .con>ul>li>p:last-child {
+            bottom: 0;
+        }
+        .btnlist {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+        }
+        .btnlist>button {
+            border: none;
+            background-color: #ccc;
+        }
+        .btnlist>button:last-child {
+            margin-left: 10px;
+        }
+        button.active {
+            background-color: rgb(194, 65, 65);
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="con">
+            <ul>
+                <li style="display: block;">
+                    <p>1/6</p>
+                    <img src="images/1.jpg" alt="">
+                    <p>大站</p>
+                </li>
+                <li>
+                    <p>2/6</p>
+                    <img src="images/2.jpg" alt="">
+                    <p>大站</p>
+                </li>
+                <li>
+                    <p>3/6</p>
+                    <img src="images/3.jpg" alt="">
+                    <p>大站</p>
+                </li>
+                <li>
+                    <p>4/6</p>
+                    <img src="images/4.jpg" alt="">
+                    <p>大站</p>
+                </li>
+                <li>
+                    <p>5/6</p>
+                    <img src="images/5.jpg" alt="">
+                    <p>大站</p>
+                </li>
+                <li>
+                    <p>6/6</p>
+                    <img src="images/6.jpg" alt="">
+                    <p>大站</p>
+                </li>
+            </ul>
+            <button class="leftBtn"><</button>
+            <button class="rightBtn">></button>
+        </div>
+        <div class="btnlist">
+            <button class="active">正常模式</button>
+            <button>循环模式</button>
+        </div>
+    </div>
+    <script>
+        let aLi=document.querySelectorAll("li"),
+            lBtn=document.querySelector(".leftBtn"),
+            rBtn=document.querySelector(".rightBtn"),
+            normalMod=document.querySelector(".btnlist>button:first-child"),
+            reclMod=document.querySelector(".btnlist>button:last-child"),
+            index=0,
+            toggle="off";//模式，off是正常，on是循环
+
+        normalMod.onclick=function(){
+            toggle="off";
+            normalMod.setAttribute("class","active");
+            reclMod.removeAttribute("class");
+        }
+        reclMod.onclick=function(){
+            toggle="on";
+            reclMod.setAttribute("class","active");
+            normalMod.removeAttribute("class");
+        }
+
+        rBtn.onclick=function(){
+            index++;
+            if(index>aLi.length-1){
+                if(toggle==="off"){
+                    index=aLi.length-1;
+                }else{
+                    index=0;
+                }
+            }
+            aLi[index].style.display="block";
+            aLi[index-1<0?aLi.length-1:index-1].style.display="none";//保证点击右按钮时显示的那个ali消失
+        }
+        lBtn.onclick=function(){
+            index--;
+            if(index<0){
+                if(toggle==="off"){
+                    index=0;
+                }else{
+                    index=aLi.length-1;
+                }
+            }
+            aLi[index].style.display="block";
+            aLi[index-1>aLi.length-1?0:index+1].style.display="none";////保证点击左按钮时显示的那个ali消失
+        }
+    </script>
+</body>
+</html>
