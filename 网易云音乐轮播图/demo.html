@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网易云音乐3d轮播图</title>
+    <style>
+        body,
+        ul {
+            margin: 0;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .carousel {
+            position: relative;
+            width: 1200px;
+            height: 365px;
+            margin: 100px auto 0;
+        }
+
+        .imgbox {
+            width: 100%;
+            height: 336px;
+        }
+
+        .imgbox>ul {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .imgbox>ul>li {
+            position: absolute;
+            width: 730px;
+            height: 336px;
+            transition: transform 0.5s linear;
+        }
+
+        .list1 {
+            z-index: 2;
+            transform: translateX(0) scale(0.81);
+            transform-origin: 0% 100%;
+        }
+
+        .list2 {
+            z-index: 3;
+            transform: translateX(235px);
+        }
+
+        .list3 {
+            z-index: 2;
+            transform: translateX(730px) scale(0.81);
+            transform-origin: 100% 100%;
+        }
+
+        .list4 {
+            transform: translateX(965px) scale(0.81);
+            transform-origin: 100% 100%;
+        }
+
+        .list5 {
+            transform: translateX(1200px) scale(0.81);
+            transform-origin: 100% 100%;
+        }
+
+        .list6 {
+            transform: translateX(1435px) scale(0.81);
+            transform-origin: 100% 100%;
+        }
+
+        .imgbox>ul>li>img {
+            width: 100%;
+            /* height: 100%; */
+        }
+
+        .btnlist {
+            width: 100%;
+            height: 29px;
+            text-align: center;
+        }
+
+        .btnlist>a {
+            display: inline-block;
+            width: 35px;
+            height: 3px;
+            background-color: #ccc;
+        }
+
+        button {
+            position: absolute;
+            z-index: 10;
+            top: 40%;
+            width: 50px;
+            height: 50px;
+            background-color: rgb(11, 14, 11, 0.5);
+            border: none;
+        }
+
+        button.left {
+            left: 0;
+        }
+
+        button.right {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="carousel">
+        <div class="imgbox">
+            <ul>
+                <li class="list1"><img src="images/1.jpg" alt=""></li>
+                <li class="list2"><img src="images/2.jpg" alt=""></li>
+                <li class="list3"><img src="images/3.jpg" alt=""></li>
+                <li class="list4"><img src="images/4.jpg" alt=""></li>
+                <li class="list5"><img src="images/5.jpg" alt=""></li>
+                <li class="list6"><img src="images/6.jpg" alt=""></li>
+            </ul>
+        </div>
+        <div class="btnlist">
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+        </div>
+        <button class="left">
+            <</button> <button class="right">>
+        </button>
+    </div>
+    <script>
+        /*
+            程序逻辑
+                1：设置线性按钮图标的颜色：封装成函数
+                    1.1：获取线性按钮元素
+                    1.2：设置某个按钮(给定参数，给定下标)的颜色
+                2：实现向下翻页
+                    2.1：获取li元素
+                    2.2：获取所有li元素的名称，并存储在一个数组
+                    2.3：操作数组
+        */
+        let aLi = document.querySelectorAll("li"),
+            aBtn = document.querySelectorAll("a"),
+            oImgBox = document.querySelector("ul"),
+            oBtnlist = document.querySelector(".btnlist"),
+            oPre = document.querySelector(".left"),
+            oNext = document.querySelector(".right"),
+            aName = [],// 类名组成的数组
+            index = 0;// 控制是第几张
+
+        aLi.forEach(function (item, index, arr) {
+            aName.push(item.getAttribute("class"));
+        });
+        aBtn.forEach(function (item, index, arr) {
+            item.dataset.index = index;
+        });
+
+        // 设置按钮颜色，默认第一个
+        (function setBtnColor(ind) {
+            aBtn.forEach(function (item, index, arr) {
+                item.style.backgroundColor = "#ccc";
+            });
+            aBtn[ind].style.backgroundColor = "#45c17c";
+        })(index)
+
+        // 向下翻页
+        function nextPic() {
+            aName.unshift(aName.pop());
+            aLi.forEach(function (item, index, arr) {
+                item.setAttribute("class", aName[index]);
+            });
+            setBtnColor(index > 4 ? index = 0 : ++index);
+        }
+        // 向上翻页
+        function prePic() {
+            aName.push(aName.shift());
+            aLi.forEach(function (item, index, arr) {
+                item.setAttribute("class", aName[index]);
+            });
+            setBtnColor(index < 1 ? index = 5 : --index);
+        }
+
+        /**
+         * 业务函数部分
+        */
+        //点击元素进行翻页
+        oImgBox.addEventListener("click", function (ev) {
+            switch (ev.target.parentNode.classList[0]) {
+                case "list1":
+                    prePic();
+                    break;
+                case "list3":
+                    nextPic();
+                    break;
+            }
+        })
+
+        //线性按钮的点击
+        oBtnlist.addEventListener("click", function (ev) {
+            if (ev.target.dataset.index) {
+                let offset = ev.target.dataset.index - index;
+                if (offset > 0) {
+                    for (let i = 0; i < offset; i++) {
+                        nextPic();
+                    }
+                } else {
+                    for (let i = 0; i < Math.abs(offset); i++) {
+                        prePic();
+                    }
+                }
+            }
+        })
+
+        //左右按钮实现翻页
+        oPre.onclick = function () {
+            prePic();
+        }
+        oNext.onclick = function () {
+            nextPic();
+        }
+
+        //自动轮播
+        let timer = setInterval(nextPic, 3000);
+        oImgBox.addEventListener("mouseover", function () {
+            clearInterval(timer);
+        })
+        oImgBox.addEventListener("mouseout", function () {
+            timer = setInterval(nextPic, 3000);
+        })
+    </script>
+</body>
+
+</html>
