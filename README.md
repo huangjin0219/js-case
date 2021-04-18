@@ -12,6 +12,7 @@
 思路：利用自定义属性按下的每个字符都绑定一个事件
 
 主要利用了：
+
 - 事件监听 addEventListener
 - 默认事件的target属性：代表目标元素
 - 自定义属性设置：dataset
@@ -21,14 +22,23 @@
 思路：n张图片放在各自的li里面，并且定位在ul的上层。通过开关控制和加类名的方式实现正常模式和循环模式的切换，通过display="none"或"block"来控制li的显示与隐藏，上一页和下一页的按钮用来控制li数组的index变化。
 
 主要利用了：
-设置元素属性：setAttribute
-移除元素属性：removeAttribute
 
+- 设置元素属性：setAttribute
+- 移除元素属性：removeAttribute
+
+### 小球的圆周运动-日期格式详解作业
+
+思路：计算一下圆点运动时的角度变化即可
+
+主要利用了：transform和延时器setInterval
+
+时钟的原理也是类似的。
 
 ### 网易云音乐3D轮播图-自动轮播
 
 思路：六张图分别在六个li里面，给每个li添加一个类名，利用css把一开始六张图片的位置放好。然后把六个li的**类名组成一个数组**，向下翻页就是把数组的最后一位移到第一位，向上翻页就是把数组的第一位移到最后一位。实现自动翻页功能，把向下翻页放在一个定时器里面即可，鼠标移入的时候清除定时器。
 
 主要利用了：
-transform的translateX和scale
-数组方法 push pop unshift shift
+
+- transform的translateX和scale
+- 数组方法 push pop unshift shift

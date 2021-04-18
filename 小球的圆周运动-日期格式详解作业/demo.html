@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小球的圆周运动</title>
+  <style>
+    body{
+      margin: 0;
+    }
+    .cir{
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 500px;
+      height: 500px;
+      border: 2px solid red;
+      border-radius: 50%;
+      margin: 50px auto 0;
+    }
+    .dot{
+      width: 18px;
+      height: 18px;
+      background-color: blueviolet;
+      border-radius: 50%;
+      transform: translateX(0) translateY(-250px);
+    }
+  </style>
+</head>
+<body>
+  <div class="cir">
+    <div class="dot"></div>
+  </div>
+  <script>
+    let dot = document.querySelector(".dot");
+    const STEP = Math.PI/1800;//一次旋转的角度  2*PI/(刷新频率*STEP)=一圈用几秒
+    let cord = 0;
+    setInterval(function(){
+      dot.style.transform = `translate(${250*Math.sin(cord)}px,${-250*Math.cos(cord)}px)`;
+      cord += STEP;
+    },1000/60)//刷新频率一秒60次
+  </script>
+</body>
+</html>
