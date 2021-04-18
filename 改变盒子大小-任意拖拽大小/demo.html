@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拖拽滑块</title>
+  <style>
+    /* css变量 */
+    :root {
+      --bor-width: 5px;
+      --bor-height: 5px;
+      --bor-color: rgb(153, 46, 46);
+      --dot-color: rgb(22, 230, 101);
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .resize {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      background-color: #ccc;
+      margin: 50px auto;
+    }
+
+    .resize>div {
+      position: absolute;
+    }
+
+    /* .resize>div[class$="r"] 选中所有类名中以字符r结尾的所有div元素 */
+    .resize>div[class$="r"] {
+      left: 0;
+      width: 100%;
+      height: var(--bor-height);
+      background-color: var(--bor-color);
+    }
+
+    .bor-t {
+      transform: translateY(-100%);
+    }
+
+    .bor-b {
+      bottom: 0;
+      transform: translateY(100%);
+    }
+
+    .resize>div[class$="c"] {
+      height: 100%;
+      width: var(--bor-width);
+      background-color: var(--bor-color);
+    }
+
+    .bor-l {
+      left: calc(0px - var(--bor-width));
+    }
+
+    .bor-r {
+      right: calc(0px - var(--bor-width));
+    }
+
+    /* .resize>div[class^="dot"] 选中所有类名中包含dot字符的所有div元素 */
+    .resize>div[class^="dot"] {
+      width: var(--bor-width);
+      height: var(--bor-height);
+      background-color: var(--dot-color);
+    }
+
+    .dot-lt {
+      left: calc(0px - var(--bor-width));
+      top: calc(0px - var(--bor-height));
+    }
+
+    .dot-lt:hover {
+      cursor: nw-resize;
+    }
+
+    .dot-rt {
+      right: calc(0px - var(--bor-width));
+      top: calc(0px - var(--bor-height));
+    }
+
+    .dot-rt:hover {
+      cursor: ne-resize;
+    }
+
+    .dot-rb {
+      right: calc(0px - var(--bor-width));
+      bottom: calc(0px - var(--bor-height));
+    }
+
+    .dot-rb:hover {
+      cursor: nw-resize;
+    }
+
+    .dot-lb {
+      left: calc(0px - var(--bor-width));
+      bottom: calc(0px - var(--bor-height));
+    }
+
+    .dot-lb:hover {
+      cursor: ne-resize;
+    }
+
+    /* .resize>div:hover{
+      cursor: nesw-resize;
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="resize">
+    <div class="dot-lt"></div>
+    <div class="dot-rt"></div>
+    <div class="dot-rb"></div>
+    <div class="dot-lb"></div>
+    <div class="bor-t r"></div>
+    <div class="bor-r c"></div>
+    <div class="bor-b r"></div>
+    <div class="bor-l c"></div>
+  </div>
+
+  <!-- <script src="./demo.js" /> -->
+  <script>
+    let oResize = document.querySelector(".resize");
+    let oChange = document.querySelectorAll(".resize>div");
+
+    oChange.forEach(function (item, index, array) {
+      item.dataset.index = index;
+    })
+
+    oResize.addEventListener("mousedown", drag);
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", drag);
+
+    let toggle = false;
+    let x1, y1, ele;
+    let startX, startY, startW, startH;
+    let nowW, nowH;
+
+    function drag(ev = window.event) {
+
+      switch (ev.type) {
+        case "mousedown":
+          if (ev.target.dataset.index) {
+            toggle = true;
+            ele = ev.target;
+            x1 = ev.clientX;
+            y1 = ev.clientY;
+            startX = oResize.offsetLeft;
+            startY = oResize.offsetTop;
+            startW = oResize.offsetWidth;
+            startH = oResize.offsetHeight;
+          }
+          break;
+        case "mousemove":
+          if (toggle) {
+            let x2 = ev.clientX;
+            let y2 = ev.clientY;
+            switch (ele.dataset.index) {
+              case "0":
+                nowW = Math.min(-(x2 - x1) + startW, startW + startX - 5);
+                nowW = Math.max(0, nowW);
+
+                nowH = Math.min(-(y2 - y1) + startH, startH + startY - 5);
+                nowH = Math.max(0, nowH);
+                oResize.style.width = nowW + "px";
+                oResize.style.height = nowH + "px";
+                oResize.style.marginTop = startY + startH - nowH + "px";
+                oResize.style.marginLeft = startX + startW - nowW + "px";
+                break;
+              case "1":
+                nowW = Math.min((x2 - x1) + startW, startW + startX - 5);
+                nowW = Math.max(0, nowW);
+
+                nowH = Math.min(-(y2 - y1) + startH, startH + startY - 5);
+                nowH = Math.max(0, nowH);
+                oResize.style.width = nowW + "px";
+                oResize.style.height = nowH + "px";
+                oResize.style.marginTop = startY + startH - nowH + "px";
+                oResize.style.marginRight = startX + startW - nowW + "px";
+                break;
+              case "2":
+                nowW = Math.min((x2 - x1) + startW, startW + startX - 5);
+                nowW = Math.max(0, nowW);
+
+                nowH = Math.min((y2 - y1) + startH, startH + startY - 5);
+                nowH = Math.max(0, nowH);
+                oResize.style.width = nowW + "px";
+                oResize.style.height = nowH + "px";
+                // oResize.style.marginBottom = startY + startH - nowH + "px";
+                oResize.style.marginRight = startX + startW - nowW + "px";
+                break;
+              case "3":
+                nowW = Math.min(-(x2 - x1) + startW, startW + startX - 5);
+                nowW = Math.max(0, nowW);
+
+                nowH = Math.min((y2 - y1) + startH, startH + startY - 5);
+                nowH = Math.max(0, nowH);
+                oResize.style.width = nowW + "px";
+                oResize.style.height = nowH + "px";
+                oResize.style.marginBottom = startY + startH - nowH + "px";
+                oResize.style.marginLeft = startX + startW - nowW + "px";
+                break;
+              case "4":
+                nowH = Math.min(-(y2 - y1) + startH, startH + startY - 5);
+                nowH = Math.max(0, nowH);
+                oResize.style.height = nowH + "px";
+                oResize.style.marginTop = startY + startH - nowH + "px";
+                oResize.style.marginLeft = startX + startW - nowW + "px";
+                break;
+              case "5":
+                nowW = Math.min((x2 - x1) + startW, startW + startX - 5);
+                nowW = Math.max(0, nowW);
+                oResize.style.width = nowW + "px";
+                oResize.style.marginRight = startX + startW - nowW + "px";
+                break;
+              case "6":
+                nowH = Math.min((y2 - y1) + startH, startH + startY - 5);
+                nowH = Math.max(0, nowH);
+                oResize.style.height = nowH + "px";
+                // oResize.style.marginBottom = startY + startH - nowH + "px";
+                break;
+              case "7":
+                nowW = Math.min(-(x2 - x1) + startW, startW + startX - 5);
+                nowW = Math.max(0, nowW);
+                oResize.style.width = nowW + "px";
+                oResize.style.marginLeft = startX + startW - nowW + "px";
+                break;
+            }
+          }
+          break;
+        case "mouseup":
+          toggle = false;
+          break;
+      }
+    }
+  </script>
+</body>
+
+</html>
