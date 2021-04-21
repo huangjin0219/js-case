@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无缝轮播图</title>
+    <style>
+        body,
+        ul {
+            margin: 0;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        .banner {
+            position: relative;
+            width: 780px;
+            height: 380px;
+            margin: 20px auto;
+        }
+
+        .imgbox {
+            overflow: hidden;
+            width: 100%;
+            height: 330px;
+        }
+
+        .imgbox ul {
+            width: 700%;
+            height: 100%;
+            transition: transform .5s;
+        }
+
+        .imgbox ul.off {
+            transition: transform 0s;
+        }
+
+        .imgbox ul>li {
+            float: left;
+            width: 780px;
+            height: 100%;
+        }
+
+        .tab {
+            width: 780px;
+            height: 50px;
+        }
+
+        .tab>ul {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tab>ul>li {
+            float: left;
+            width: 20%;
+            height: 100%;
+            background-color: #000;
+            color: aliceblue;
+            text-align: center;
+            line-height: 50px;
+            font-size: 14px;
+        }
+
+        .tab>ul>li.active {
+            background-color: rgb(126, 133, 68);
+            color: rgb(248, 244, 7);
+        }
+
+        .arrow>div {
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 60px;
+            background-color: #000;
+            transform: translateY(-50%);
+            color: antiquewhite;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        .arrow>div.left {
+            left: 0;
+        }
+
+        .arrow>div.right {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">
+        <div class="imgbox">
+            <ul>
+                <li><img src="images/1.jpg" alt=""></li>
+                <li><img src="images/2.jpg" alt=""></li>
+                <li><img src="images/3.jpg" alt=""></li>
+                <li><img src="images/4.jpg" alt=""></li>
+                <li><img src="images/5.jpg" alt=""></li>
+            </ul>
+        </div>
+        <div class="tab">
+            <ul>
+                <li>开黑吗</li>
+                <li>我亚索贼溜</li>
+                <li>只要我E的够快</li>
+                <li>队友的问号</li>
+                <li>就跟不上我</li>
+            </ul>
+        </div>
+        <div class="arrow">
+            <div class="left"><</div>
+            <div class="right">></div>
+        </div>
+    </div>
+    <script>
+        /* 
+        逻辑:
+            前提:有动画效果
+            所有的li横向排列
+            最后一张复制到第一张前面
+            第一张复制一份到最后一张的后面
+            当移动到最后一张的后面一张的时候,等动画效果结束后再消除动画并将ul移动到第一张图片的位置,并加上动画,此时的效果就是从最后一张到第一张的切换是平滑的
+        */
+
+        let oUl = document.querySelector(".imgbox>ul");
+        let aImg = document.querySelectorAll(".imgbox>ul>li");
+        let aBtn = document.querySelectorAll(".arrow>div");
+        let aTab = document.querySelectorAll(".tab>ul>li");
+        let liWidth = aImg[0].offsetWidth;
+
+        function setDomNode(eleF, eleS) {
+            eleF.insertBefore(eleS[eleS.length - 1].cloneNode(true), eleS[0]);
+            eleF.appendChild(eleS[0].cloneNode(true));
+        }
+        setDomNode(oUl, aImg);
+
+        let imgIndex = 0; //0~4->-1~5
+        function changPage(index) {
+            oUl.classList.remove("off"); //加上动画
+            oUl.style.transform =
+                `translateX(${-(index+1)*liWidth}px)`; //这句必须在前面,保证最后一张再向后翻页是可以正常有动画效果的显示后面加上的那张图片,等动画效果结束后ul的位置才会变化的!!!
+            if (index < 0) {
+                setTimeout(() => {
+                    oUl.classList.add("off"); //去掉动画
+                    oUl.style.transform = `translateX(${-(aImg.length)*liWidth}px)`;
+                }, 300)
+                index = aImg.length - 1;
+            } else if (index > aImg.length - 1) {
+                setTimeout(() => {
+                    oUl.classList.add("off"); //去掉动画,是为了ul移动的过程中没有动画效果
+                    oUl.style.transform = `translateX(-${liWidth}px)`;
+                }, 500)
+                index = 0;
+            }
+            aTab[imgIndex].classList.remove("active");
+            aTab[index].classList.add("active");
+            imgIndex = index;
+
+        }
+        changPage(0);
+
+
+        // 业务代码
+        aBtn.forEach(function (ele, leftOrRight) {
+            ele.onclick = function () {
+                changPage(leftOrRight ? imgIndex + 1 : imgIndex - 1);
+            }
+        })
+        aTab.forEach((ele, index) => {
+            ele.onclick = function(){
+                changPage(index);
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>代表动画结束之后的事件</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .move {
+      width: 100px;
+      height: 100px;
+      background-color: #ccc;
+      margin: 100px auto;
+      transition: height 3s;
+    }
+
+    .move:hover {
+      height: 500px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="move"></div>
+
+  <script>
+    // 解决transitionend事件的兼容性问题
+    function whichTransitionEndEvent() {
+      let ele = document.createElement("div");
+      let transitionEvent = {
+        "transition": "transitionend", // IE
+        "Otransition": "oTransitionEnd", // Opera
+        "Moztransition": "transitionend", // 火狐
+        "WebkitTransition": "webkitTransitionEnd" // Safari和谷歌
+      };
+      for(let t in transitionEvent){
+        if(ele.style[t]!==undefined){
+          return transitionEvent[t]
+        }
+      }
+    }
+    let oDiv = document.querySelector(".move")
+    oDiv.addEventListener(whichTransitionEndEvent(), function () {
+      oDiv.innerText = "阿仁";
+    })
+  </script>
+</body>
+
+</html>
