@@ -140,6 +140,8 @@
     let x1, y1, ele;
     let startX, startY, startW, startH;
     let nowW, nowH;
+    let innerWidth = document.innerWidth;
+    let innerHeight = document.innerHeight;
 
     function drag(ev = window.event) {
 
@@ -181,7 +183,7 @@
                 oResize.style.width = nowW + "px";
                 oResize.style.height = nowH + "px";
                 oResize.style.marginTop = startY + startH - nowH + "px";
-                oResize.style.marginRight = startX + startW - nowW + "px";
+                oResize.style.marginRight = innerWidth - (startX + nowW) + "px";
                 break;
               case "2":
                 nowW = Math.min((x2 - x1) + startW, startW + startX - 5);
@@ -192,7 +194,7 @@
                 oResize.style.width = nowW + "px";
                 oResize.style.height = nowH + "px";
                 // oResize.style.marginBottom = startY + startH - nowH + "px";
-                oResize.style.marginRight = startX + startW - nowW + "px";
+                oResize.style.marginRight = innerWidth - (startX + nowW) + "px";
                 break;
               case "3":
                 nowW = Math.min(-(x2 - x1) + startW, startW + startX - 5);
@@ -202,7 +204,7 @@
                 nowH = Math.max(0, nowH);
                 oResize.style.width = nowW + "px";
                 oResize.style.height = nowH + "px";
-                oResize.style.marginBottom = startY + startH - nowH + "px";
+                // oResize.style.marginBottom = startY + startH - nowH + "px";
                 oResize.style.marginLeft = startX + startW - nowW + "px";
                 break;
               case "4":
@@ -216,7 +218,7 @@
                 nowW = Math.min((x2 - x1) + startW, startW + startX - 5);
                 nowW = Math.max(0, nowW);
                 oResize.style.width = nowW + "px";
-                oResize.style.marginRight = startX + startW - nowW + "px";
+                oResize.style.marginRight = innerWidth - (startX + nowW) + "px";
                 break;
               case "6":
                 nowH = Math.min((y2 - y1) + startH, startH + startY - 5);

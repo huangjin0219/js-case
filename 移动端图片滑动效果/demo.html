@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动端图片滑动效果</title>
+  <style>
+    body,
+    ul {
+      margin: 0;
+    }
+
+    ul {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    img {
+      display: block;
+    }
+
+    .content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url(images/1.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      filter: blur(10px);
+    }
+
+    .swiper {
+      overflow: hidden;
+      width: 100vw;
+      height: 60vh;
+    }
+
+    ul {
+      width: 600%;
+      height: 100%;
+      /* 改变层级 */
+      transform: translateZ(0);
+    }
+
+    li {
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      float: left;
+      width: 80vw;
+      height: 60vh;
+      padding: 0 10vw;
+    }
+
+    li>img {
+      height: 100%;
+      border-radius: 3vw;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <div class="bg"></div>
+    <div class="swiper">
+      <ul>
+        <li><img src="images/1.jpg" alt=""></li>
+        <li><img src="images/2.jpg" alt=""></li>
+        <li><img src="images/3.jpg" alt=""></li>
+        <li><img src="images/4.jpg" alt=""></li>
+        <li><img src="images/5.jpg" alt=""></li>
+        <li><img src="images/6.jpg" alt=""></li>
+        <li><img src="images/2.jpg" alt=""></li>
+        <li><img src="images/3.jpg" alt=""></li>
+        <li><img src="images/4.jpg" alt=""></li>
+        <li><img src="images/5.jpg" alt=""></li>
+        <li><img src="images/6.jpg" alt=""></li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    /*
+      1:设置swiper元素里面的ul元素的宽度,使得ul元素的宽度与li的个数进行关联
+        1.1:获取swiper下的ul元素
+        1.2:获取li元素的个数
+        1.3:设置ul元素的宽度
+
+      2:设置元素的滑动事件
+        2.1:获取触摸ul元素时,手指触摸的位置 x1
+        2.2:获取触摸ul元素时,ul元素的位置
+        2.3:获取手指滑动时,手指的位置 x2
+        2.4:计算ul元素的新位置
+        2.5:设置ul元素的新位置
+    **/
+
+    let oUl = document.querySelector(".swiper>ul"),
+      aLi = document.querySelectorAll(".swiper>ul>li"),
+      oSwiper = document.querySelector(".swiper"),
+      oBg = document.querySelector(".bg");
+
+    oUl.style.width = aLi.length + "00vw";
+
+    oSwiper.addEventListener("touchstart", touch);
+    oSwiper.addEventListener("touchmove", touch);
+    oSwiper.addEventListener("touchend", touch);
+
+    let x1, x2, startX, nowX;
+    let aLiLen = aLi.length;
+    let liWidth = aLi[0].offsetWidth;
+    console.log(liWidth);
+    oUl.transf = {}; //设置ul的自定义属性
+    function touch(ev = window.event) {
+      switch (ev.type) {
+        case "touchstart":
+          oUl.style.transition = ``;
+          x1 = ev.changedTouches[0].clientX;
+          startX = oUl.transf["translateX"] || 0; //记录一开始的translateX的值
+          break;
+        case "touchmove":
+          x2 = ev.changedTouches[0].clientX;
+          nowX = startX + x2 - x1;
+          console.log(nowX);
+          oUl.transf["translateX"] = nowX;
+          oUl.style.transform = `translateX(${nowX}px)`;
+          break;
+        case "touchend":
+          let ulOffset = oUl.transf["translateX"];
+          ulOffset = Math.min(0, ulOffset);
+          ulOffset = Math.max(ulOffset, -(aLiLen - 1) * liWidth)
+          let num = Math.round(-ulOffset/liWidth);//偏移几个li,num是正数
+          oUl.transf["translateX"] = -num*liWidth;
+          oUl.style.transition = `0.3s`;
+          oUl.style.transform = `translateX(${-num*liWidth}px)`;
+          oBg.style.backgroundImage = `url(images/${num+1}.jpg)`;
+          break;
+      }
+    }
+  </script>
+</body>
+
+</html>
