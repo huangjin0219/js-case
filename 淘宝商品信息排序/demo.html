@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>排序算法</title>
+  <style>
+    body,
+    ul,
+    h3 {
+      margin: 0;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .content {
+      box-sizing: border-box;
+      width: 790px;
+      margin: 100px auto;
+    }
+
+    .content>.nav {
+      height: 40px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .content>.nav>li {
+      box-sizing: border-box;
+      float: left;
+      height: 100%;
+      width: 85px;
+      line-height: 40px;
+      text-align: center;
+    }
+
+    .content>.nav>li:hover {
+      border-left: 1px solid #e8e8e8;
+      border-right: 1px solid #e8e8e8;
+    }
+
+    .content-list {
+      height: 620px;
+      margin-top: 10px;
+    }
+
+    .content-list>li {
+      float: left;
+      width: 180px;
+      height: 300px;
+      margin-left: 20px;
+      margin-bottom: 15px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .content-list>li:nth-of-type(4n-3) {
+      margin-left: 0;
+    }
+
+    .content-list>li>img {
+      width: 180px;
+    }
+
+    .msgcon {
+      box-sizing: border-box;
+      width: 180px;
+      height: 120px;
+      padding: 18px 10px 15px;
+    }
+
+    .msgcon>.pricemsg {
+      width: 160px;
+      height: 12px;
+      margin-right: 20px;
+      font-size: 12px;
+    }
+
+    .pricemsg>.price {
+      float: left;
+    }
+
+    .price::before {
+      content: "￥";
+      display: inline;
+      color: red;
+      margin-right: 5px;
+    }
+
+    .pricemsg>.buyer {
+      float: right;
+      color: #ccc;
+    }
+
+    .buyer::after {
+      content: "人付款";
+      display: inline;
+      color: #ccc;
+    }
+
+    .msgcon>h3 {
+      width: 160px;
+      height: 50px;
+      font-size: 14px;
+      float: left;
+    }
+
+    .msgcon>h3::before {
+      content: "包邮";
+      display: inline;
+      margin-right: 10px;
+      color: #fff;
+      background-color: red;
+    }
+
+    .shopmsg {
+      width: 160px;
+      font-size: 14px;
+    }
+
+    .shopmsg>.shopname {
+      float: left;
+    }
+
+    .shopmsg>.shoplocation {
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <ul class="nav">
+      <li class="up">价格升序</li>
+      <li class="down">价格降序</li>
+      <li class="random">价格随机</li>
+    </ul>
+    <ul class="content-list">
+      <li>
+        <img src="images/1.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">22</span>
+            <span class="buyer">12121212</span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/2.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">1</span>
+            <span class="buyer"></span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/3.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">21</span><span class="buyer"></span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/4.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">233</span><span class="buyer"></span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/5.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">11</span><span class="buyer"></span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/6.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">567</span><span class="buyer"></span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/7.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">456</span>
+            <span class="buyer"></span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="images/8.webp" alt="" />
+        <div class="msgcon">
+          <div class="pricemsg">
+            <span class="price">0.1</span>
+            <span class="buyer">0</span>
+          </div>
+          <h3>小商品大非常自信吃个饭哥哥</h3>
+          <div class="shopmsg">
+            <span class="shopname">小店</span>
+            <span class="shoplocation">杭州</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    let conList = document.querySelector(".content-list");
+    let aListMsg = document.querySelectorAll(".content-list>li");
+    let aBtn = document.querySelector(".nav");
+    let aItem = [...aListMsg];// 浅复制，复制的是对象的地址
+
+    aListMsg.forEach((item, index, array) => {
+      item.price = item.querySelector(".price").innerText - 0;
+    })
+    aBtn.addEventListener("click", (ev = window.event) => {
+      switch (ev.target.classList[0]) {
+        case "up":
+          // aItem.sort((x, y) => x.price - y.price)
+          bubbleSort(aItem, "price")
+          conList.innerHTML = '';
+          aItem.forEach((item, index, arr) => {
+            conList.appendChild(item)
+          })
+          break;
+        case "down":
+          aItem = quickSort(aItem, "price")
+          conList.innerHTML = '';
+          aItem.forEach((item, index, arr) => {
+            conList.appendChild(item)
+          })
+          break;
+        case "random":
+          aItem.sort((x, y) => {
+            if (x.price > y.price) {
+              return Math.random() - 0.5
+            }
+          })
+          conList.innerHTML = '';
+          aItem.forEach((item, index, arr) => {
+            conList.appendChild(item)
+          })
+          break;
+
+      }
+    })
+
+    // 冒泡排序
+    function bubbleSort(obj, str) {
+      for (let i = 0; i < obj.length; i++) {
+        for (let j = i + 1; j < obj.length; j++) {
+          if (obj[i][str] > obj[j][str]) {
+            let temp = obj[i];
+            obj[i] = obj[j];
+            obj[j] = temp;
+            // [obj[i],obj[j]] = [obj[j],obj[i]]
+          }
+        }
+      }
+    }
+
+    // 快速排序
+    function quickSort(obj, str) {
+      if (obj.length <= 1) {
+        return obj;
+      }
+      let pivotIndex = Math.floor(obj.length / 2);//取中间值的索引
+      let pivotValue = obj.splice(pivotIndex, 1)[0];//中间位置的值
+      console.log("🚀 ~ file: demo.html ~ line 307 ~ quickSort ~ pivotValue", pivotValue[str])
+      let left = [], right = [];
+      for (let i = 0; i < obj.length; i++) {
+        if (obj[i][str] > pivotValue[str]) {
+          left.push(obj[i])
+        } else {
+          right.push(obj[i])
+        }
+      }
+      return quickSort(left, str).concat([pivotValue], quickSort(right, str))
+    }
+  </script>
+</body>
+
+</html>
