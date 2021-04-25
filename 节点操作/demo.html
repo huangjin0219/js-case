@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节点操作</title>
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, rgb(140, 193, 222), rgb(249, 168, 135));
+    }
+
+    h4,
+    ul,
+    p {
+      margin: 0;
+    }
+
+    ul {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .clearfix::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .content {
+      width: 900px;
+      height: 620px;
+      margin: 100px auto;
+      background-color: #fff;
+    }
+
+    .content>div {
+      float: left;
+      width: 50%;
+      height: 100%;
+    }
+
+    .con-right {
+      box-sizing: border-box;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 80px 20px 0;
+    }
+
+    .con-left>h4 {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 55px 20px 0;
+      line-height: 1.5em;
+    }
+
+    .con-left>h4>* {
+      float: left;
+      font-size: 16px;
+    }
+
+    .con-left>h4>p {
+      margin-right: 10px;
+      color: rgb(233, 192, 143);
+    }
+
+    .con-left>h4>ul>li {
+      float: left;
+      margin-right: 1em;
+    }
+
+    .con-left>h4>ul>li>a {
+      color: #444;
+      text-decoration: none;
+    }
+
+    .con-left>h4>ul>li>a:hover {
+      color: brown;
+    }
+
+    .con-left>.select-addr {
+      box-sizing: border-box;
+      padding: 15px 20px 0;
+    }
+
+    .con-left>.select-addr>span {
+      display: inline-block;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin: 5px;
+    }
+
+    .con-left>.select-addr>span>a {
+      padding: 0 5px;
+      border-left: 1px solid #ccc;
+      color: #000;
+      font-style: italic;
+      text-decoration: none;
+    }
+
+    .con-left>.select-addr>span>a:hover {
+      color: red;
+    }
+
+    .con-right>span {
+      display: inline-block;
+      border: 1px solid #fff;
+      padding: 5px;
+      margin: 5px;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <div class="con-left">
+      <h4 class="clearfix">
+        <p>热门目的地：</p>
+        <ul>
+          <li class="local-list"><a href="javascript:;">泰国</a></li>
+          <li class="local-list"><a href="javascript:;">新加坡</a></li>
+          <li class="local-list"><a href="javascript:;">印度尼西亚</a></li>
+          <li class="local-list"><a href="javascript:;">韩国</a></li>
+          <li class="local-list"><a href="javascript:;">日本</a></li>
+        </ul>
+      </h4>
+      <div class="select-addr">
+        <!-- <span class="selcet-list">
+          马来西亚
+          <a href="javascript:;">x</a>
+        </span> -->
+      </div>
+    </div>
+    <div class="con-right">
+      <!-- <span>马来西亚</span> -->
+    </div>
+  </div>
+  <script>
+    let oConLeft = document.querySelector(".con-left");
+    let oConRight = document.querySelector(".con-right");
+    let oSelectAddr = document.querySelector(".select-addr");
+
+    oConLeft.querySelectorAll("li").forEach(function (item, index, arr) {
+      item.dataset.toggle = "false";
+    })
+
+    oConLeft.addEventListener("click", function (ev = window.event) {
+      console.log("🚀 ~ file: demo.html ~ line 126 ~ oConLeft.addEventListener ~ ev.target.parentNode.tagName", ev
+        .target.parentNode.tagName)
+      let ele = ev.target.parentNode
+      switch (ele.tagName) {
+        case "LI":
+          if (ele.dataset.toggle === "false") {
+            let str = ele.innerText;
+            // let eleStr = `<span class="selcet-list">${str}
+            //                 <a href="javascript:;">x</a>
+            //               </span>`;
+            // ele.dataset.toggle="true";
+            // oSelectAddr.innerHTML+=eleStr;
+            let eleChild = document.createElement("span");
+            eleChild.classList.add("selcet-list");
+            console.log("🚀 ~ file: demo.html ~ line 168 ~ eleChild", eleChild)
+            eleChild.append(str);//append加在所有子节点的最后，可以是一个字符串
+
+            eleChild2 = eleChild.cloneNode(true)
+            oConRight.appendChild(eleChild2);
+
+            let eleA = document.createElement("a")
+            eleA.innerText="x";
+            eleA.setAttribute("href","javascript:;")
+            eleChild.appendChild(eleA)
+            oSelectAddr.appendChild(eleChild)
+            ele.dataset.toggle="true";
+            
+            yaosiyiqisi(eleChild,eleChild2,ele)
+          }
+          break;
+          case "SPAN":
+            ele.remove()
+          break;
+      }
+    })
+
+    function yaosiyiqisi(ele1,ele2,eleF){
+      ele1.addEventListener("DOMNodeRemoved",function(){
+        ele2.remove()
+        eleF.dataset.toggle="false";
+      })
+    }
+  </script>
+</body>
+
+</html>
