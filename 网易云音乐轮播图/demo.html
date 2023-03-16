@@ -162,12 +162,13 @@
       })
 
       // 设置按钮颜色，默认第一个
-      ;(function setBtnColor(ind) {
+      function setBtnColor(ind) {
         aBtn.forEach(function (item, index, arr) {
           item.style.backgroundColor = "#ccc"
         })
         aBtn[ind].style.backgroundColor = "#45c17c"
-      })(index)
+      }
+      setBtnColor(index)
 
       // 向下翻页
       function nextPic() {
