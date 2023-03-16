@@ -1,98 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>移动端图片滑动效果-封装函数</title>
+    <style>
+      body,
+      ul {
+        margin: 0;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>移动端图片滑动效果-封装函数</title>
-  <style>
-    body,
-    ul {
-      margin: 0;
-    }
+      ul {
+        padding-left: 0;
+        list-style: none;
+      }
 
-    ul {
-      padding-left: 0;
-      list-style: none;
-    }
+      img {
+        display: block;
+      }
 
-    img {
-      display: block;
-    }
+      .content {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+      }
 
-    .content {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: 100vw;
-      height: 100vh;
-    }
+      .bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url(images/1.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(10px);
+      }
 
-    .bg {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url(images/1.jpg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      filter: blur(10px);
-    }
+      .swiper {
+        overflow: hidden;
+        width: 100vw;
+        height: 60vh;
+      }
 
-    .swiper {
-      overflow: hidden;
-      width: 100vw;
-      height: 60vh;
-    }
+      ul {
+        width: 600%;
+        height: 100%;
+        /* 改变层级 */
+        transform: translateZ(0);
+      }
 
-    ul {
-      width: 600%;
-      height: 100%;
-      /* 改变层级 */
-      transform: translateZ(0);
-    }
+      li {
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        width: 80vw;
+        height: 60vh;
+        padding: 0 10vw;
+      }
 
-    li {
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      float: left;
-      width: 80vw;
-      height: 60vh;
-      padding: 0 10vw;
-    }
+      li > img {
+        height: 100%;
+        border-radius: 3vw;
+      }
+    </style>
+  </head>
 
-    li>img {
-      height: 100%;
-      border-radius: 3vw;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="content">
-    <div class="bg"></div>
-    <div class="swiper">
-      <ul>
-        <li><img src="images/1.jpg" alt=""></li>
-        <li><img src="images/2.jpg" alt=""></li>
-        <li><img src="images/3.jpg" alt=""></li>
-        <li><img src="images/4.jpg" alt=""></li>
-        <li><img src="images/5.jpg" alt=""></li>
-        <li><img src="images/6.jpg" alt=""></li>
-        <li><img src="images/2.jpg" alt=""></li>
-        <li><img src="images/3.jpg" alt=""></li>
-        <li><img src="images/4.jpg" alt=""></li>
-        <li><img src="images/5.jpg" alt=""></li>
-        <li><img src="images/6.jpg" alt=""></li>
-      </ul>
+  <body>
+    <div class="content">
+      <div class="bg"></div>
+      <div class="swiper">
+        <ul>
+          <li><img src="/images/1.jpg" alt="" /></li>
+          <li><img src="/images/2.jpg" alt="" /></li>
+          <li><img src="/images/3.jpg" alt="" /></li>
+          <li><img src="/images/4.jpg" alt="" /></li>
+          <li><img src="/images/5.jpg" alt="" /></li>
+          <li><img src="/images/6.jpg" alt="" /></li>
+          <li><img src="/images/2.jpg" alt="" /></li>
+          <li><img src="/images/3.jpg" alt="" /></li>
+          <li><img src="/images/4.jpg" alt="" /></li>
+          <li><img src="/images/5.jpg" alt="" /></li>
+          <li><img src="/images/6.jpg" alt="" /></li>
+        </ul>
+      </div>
     </div>
-  </div>
-  <script>
-    /*
+    <script>
+      /*
       程序逻辑：
       手指触摸时通过改变ul元素的translate值来实现移动（使用translate不会使页面进行重新绘制，提升页面效率）
       1:设置swiper元素里面的ul元素的宽度,使得ul元素的宽度与li的个数进行关联
@@ -110,73 +109,72 @@
         2.3：手指抬起事件
     **/
 
-    let oUl = document.querySelector(".swiper>ul"),
-      aLi = document.querySelectorAll(".swiper>ul>li"),
-      oSwiper = document.querySelector(".swiper"),
-      oBg = document.querySelector(".bg");
+      let oUl = document.querySelector(".swiper>ul"),
+        aLi = document.querySelectorAll(".swiper>ul>li"),
+        oSwiper = document.querySelector(".swiper"),
+        oBg = document.querySelector(".bg")
 
-    oUl.style.width = aLi.length + "00vw";
+      oUl.style.width = aLi.length + "00vw"
 
-    oSwiper.addEventListener("touchstart", touch);
-    oSwiper.addEventListener("touchmove", touch);
-    oSwiper.addEventListener("touchend", touch);
+      oSwiper.addEventListener("touchstart", touch)
+      oSwiper.addEventListener("touchmove", touch)
+      oSwiper.addEventListener("touchend", touch)
 
-    let x1, x2, startX, nowX;
-    let aLiLen = aLi.length;
-    let liWidth = aLi[0].offsetWidth;
+      let x1, x2, startX, nowX
+      let aLiLen = aLi.length
+      let liWidth = aLi[0].offsetWidth
 
-    function touch(ev = window.event) {
-      switch (ev.type) {
-        case "touchstart":
-          oUl.style.transition = ``;
-          x1 = ev.changedTouches[0].clientX;
-          startX = cssTransform(oUl, "translateX"); //记录一开始的translateX的值
-          break;
-        case "touchmove":
-          x2 = ev.changedTouches[0].clientX;
-          nowX = startX + x2 - x1;
-          console.log(nowX);
-          cssTransform(oUl, "translateX", nowX);
-          break;
-        case "touchend":
-          let ulOffset = cssTransform(oUl, "translateX");
-          ulOffset = Math.min(0, ulOffset);
-          ulOffset = Math.max(ulOffset, -(aLiLen - 1) * liWidth)
-          let num = Math.round(-ulOffset / liWidth); //偏移几个li,num是正数
-          oUl.style.transition = `0.3s`;
-          cssTransform(oUl, "translateX", -num * liWidth);
-          oBg.style.backgroundImage = `url(images/${num+1>6?1:num+1}.jpg)`;
-          break;
+      function touch(ev = window.event) {
+        switch (ev.type) {
+          case "touchstart":
+            oUl.style.transition = ``
+            x1 = ev.changedTouches[0].clientX
+            startX = cssTransform(oUl, "translateX") //记录一开始的translateX的值
+            break
+          case "touchmove":
+            x2 = ev.changedTouches[0].clientX
+            nowX = startX + x2 - x1
+            console.log(nowX)
+            cssTransform(oUl, "translateX", nowX)
+            break
+          case "touchend":
+            let ulOffset = cssTransform(oUl, "translateX")
+            ulOffset = Math.min(0, ulOffset)
+            ulOffset = Math.max(ulOffset, -(aLiLen - 1) * liWidth)
+            let num = Math.round(-ulOffset / liWidth) //偏移几个li,num是正数
+            oUl.style.transition = `0.3s`
+            cssTransform(oUl, "translateX", -num * liWidth)
+            oBg.style.backgroundImage = `url(images/${num + 1 > 6 ? 1 : num + 1}.jpg)`
+            break
+        }
       }
-    }
 
-    // 关于transform的获取和设置,使用自定义属性
-    function cssTransform(obj, attr, value) {
-      if (!obj.transform) {
-        obj.transform = {};
+      // 关于transform的获取和设置,使用自定义属性
+      function cssTransform(obj, attr, value) {
+        if (!obj.transform) {
+          obj.transform = {}
+        }
+        switch (arguments.length) {
+          case 2: //两个参数时,获取元素的自定义属性
+            return obj.transform[attr] || 0
+            break
+          case 3:
+            obj.transform[attr] = value
+            let s = ""
+            Object.keys(obj.transform).forEach(key => {
+              switch (key) {
+                case "translate":
+                case "translateX":
+                case "translateY":
+                case "translateZ":
+                  s += `${key}(${obj.transform[key]}px)`
+                  break
+              }
+            })
+            obj.style.transform = s
+            break
+        }
       }
-      switch (arguments.length) {
-        case 2://两个参数时,获取元素的自定义属性
-          return obj.transform[attr] || 0
-          break;
-        case 3:
-          obj.transform[attr] = value;
-          let s = '';
-          Object.keys(obj.transform).forEach(key => {
-            switch (key) {
-              case "translate":
-              case "translateX":
-              case "translateY":
-              case "translateZ":
-                s += `${key}(${obj.transform[key]}px)`;
-                break
-            }
-          })
-          obj.style.transform = s;
-          break;
-      }
-    }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
